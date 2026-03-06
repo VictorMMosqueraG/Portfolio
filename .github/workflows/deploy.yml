@@ -24,6 +24,30 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Set environment variables
+        run: |
+          mkdir -p src/environments
+          cat > src/environments/environment.ts << EOF
+          export const environment = {
+            production: false,
+            emailjs: {
+              serviceId:  '${{ secrets.EMAILJS_SERVICE_ID }}',
+              templateId: '${{ secrets.EMAILJS_TEMPLATE_ID }}',
+              publicKey:  '${{ secrets.EMAILJS_PUBLIC_KEY }}',
+            },
+          };
+          EOF
+          cat > src/environments/environment.production.ts << EOF
+          export const environment = {
+            production: true,
+            emailjs: {
+              serviceId:  '${{ secrets.EMAILJS_SERVICE_ID }}',
+              templateId: '${{ secrets.EMAILJS_TEMPLATE_ID }}',
+              publicKey:  '${{ secrets.EMAILJS_PUBLIC_KEY }}',
+            },
+          };
+          EOF
+
       - name: Build Angular project
         run: npx ng build --configuration production --base-href "/Portfolio/"
 

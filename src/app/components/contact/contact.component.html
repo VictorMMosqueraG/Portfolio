@@ -1,8 +1,9 @@
 <section id="contact">
   <div class="contact-inner" *ngIf="owner">
 
+    <!-- LEFT: Info -->
     <div class="contact-info">
-      <p class="section-label">Contacto</p>
+      <p class="section-label">06 — Contact</p>
       <div class="big-text">
         Trabajemos<br><em>Juntos.</em>
       </div>
@@ -19,6 +20,7 @@
       </div>
     </div>
 
+    <!-- RIGHT: Form -->
     <div class="contact-form-wrap">
 
       @if (submitted()) {
@@ -28,6 +30,7 @@
           <p class="success-sub">Te responderé en menos de 24 horas.</p>
           <button class="btn-ghost-sm" (click)="submitted.set(false)">Enviar otro →</button>
         </div>
+
       } @else {
         <form [formGroup]="form" (ngSubmit)="onSubmit()" class="contact-form" novalidate>
 
@@ -62,6 +65,13 @@
               <span class="field-error">Mensaje requerido (mín. 10 caracteres)</span>
             }
           </div>
+
+          <!-- ERROR GLOBAL -->
+          @if (error()) {
+            <div class="error-banner">
+              <span>⚠</span> {{ error() }}
+            </div>
+          }
 
           <button type="submit" class="btn-submit" [disabled]="sending()">
             <span>{{ sending() ? 'Enviando...' : 'Enviar Mensaje' }}</span>

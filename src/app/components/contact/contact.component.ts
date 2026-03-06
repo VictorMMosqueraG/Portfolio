@@ -6,8 +6,10 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import emailjs from '@emailjs/browser';
 import { PortfolioDataService } from '../../services/portfolio-data.service';
 import { PortfolioOwner } from '../../models/skill.model';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-contact',
@@ -23,15 +25,17 @@ export class ContactComponent implements OnInit {
   owner!: PortfolioOwner;
   submitted = signal(false);
   sending = signal(false);
+  error = signal('');
 
   form!: FormGroup;
 
   ngOnInit(): void {
     this.owner = this.dataService.getOwner();
+    emailjs.init(environment.emailjs.publicKey);
 
     this.form = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
+      name:    ['', [Validators.required, Validators.minLength(2)]],
+      email:   ['', [Validators.required, Validators.email]],
       subject: ['', Validators.required],
       message: ['', [Validators.required, Validators.minLength(10)]],
     });
@@ -49,11 +53,34 @@ export class ContactComponent implements OnInit {
     }
 
     this.sending.set(true);
+    this.error.set('');
 
-    await new Promise((r) => setTimeout(r, 1500));
+    const { name, email, subject, message } = this.form.value;
+console.log('EmailJS config:', {
+  service: environment.emailjs.serviceId,
+  template: environment.emailjs.templateId,
+  key: environment.emailjs.publicKey,
+});
 
-    this.sending.set(false);
-    this.submitted.set(true);
-    this.form.reset();
+    try {
+      await emailjs.send(
+        environment.emailjs.serviceId,
+        environment.emailjs.templateId,
+        {
+          from_name:  name,
+          from_email: email,
+          subject:    subject,
+          message:    message,
+        }
+      );
+
+      this.submitted.set(true);
+      this.form.reset();
+    } catch (err) {
+      this.error.set('Hubo un error al enviar. Intenta de nuevo.');
+      console.error('EmailJS error:', err);
+    } finally {
+      this.sending.set(false);
+    }
   }
 }
