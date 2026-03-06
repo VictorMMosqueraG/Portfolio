@@ -1,88 +1,90 @@
-<section id="contact">
-  <div class="contact-inner" *ngIf="owner">
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import emailjs from '@emailjs/browser';
+import { PortfolioDataService } from '../../services/portfolio-data.service';
+import { PortfolioOwner } from '../../models/skill.model';
+import { environment } from '../../../environments/environment';
 
-    <!-- LEFT: Info -->
-    <div class="contact-info">
-      <p class="section-label">06 — Contact</p>
-      <div class="big-text">
-        Trabajemos<br><em>Juntos.</em>
-      </div>
-      <p>¿Tienes un proyecto en mente? Estoy abierto a nuevas oportunidades,
-      colaboraciones y conversaciones interesantes.</p>
+@Component({
+  selector: 'app-contact',
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule],
+  templateUrl: './contact.component.html',
+  styleUrls: ['./contact.component.scss'],
+})
+export class ContactComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private dataService = inject(PortfolioDataService);
 
-      <div class="social-links">
-        @for (s of owner.socials; track s.label) {
-          <a [href]="s.url" target="_blank" rel="noopener" class="social-link">
-            <span class="social-icon">{{ s.icon }}</span>
-            {{ s.label }}
-          </a>
+  owner!: PortfolioOwner;
+  submitted = signal(false);
+  sending = signal(false);
+  error = signal('');
+
+  form!: FormGroup;
+
+  ngOnInit(): void {
+    this.owner = this.dataService.getOwner();
+    emailjs.init(environment.emailjs.publicKey);
+
+    this.form = this.fb.group({
+      name:    ['', [Validators.required, Validators.minLength(2)]],
+      email:   ['', [Validators.required, Validators.email]],
+      subject: ['', Validators.required],
+      message: ['', [Validators.required, Validators.minLength(10)]],
+    });
+  }
+
+  isInvalid(field: string): boolean {
+    const control = this.form.get(field);
+    return !!(control?.invalid && control?.touched);
+  }
+
+  async onSubmit(): Promise<void> {
+    console.log('onSubmit ejecutado', this.form.value, 'valid:', this.form.valid);
+
+    if (this.form.invalid) {
+      console.log('Formulario inválido:', this.form.errors);
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.sending.set(true);
+    this.error.set('');
+
+    const { name, email, subject, message } = this.form.value;
+
+    console.log('EmailJS config:', {
+      service: environment.emailjs.serviceId,
+      template: environment.emailjs.templateId,
+      key: environment.emailjs.publicKey,
+    });
+
+    try {
+      const result = await emailjs.send(
+        environment.emailjs.serviceId,
+        environment.emailjs.templateId,
+        {
+          from_name:  name,
+          from_email: email,
+          subject:    subject,
+          message:    message,
         }
-      </div>
-    </div>
-
-    <!-- RIGHT: Form -->
-    <div class="contact-form-wrap">
-
-      @if (submitted()) {
-        <div class="success-state">
-          <div class="success-icon">✦</div>
-          <p class="success-title">Mensaje enviado.</p>
-          <p class="success-sub">Te responderé en menos de 24 horas.</p>
-          <button class="btn-ghost-sm" (click)="submitted.set(false)">Enviar otro →</button>
-        </div>
-
-      } @else {
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="contact-form" novalidate>
-
-          <div class="form-group" [class.error]="isInvalid('name')">
-            <input id="name" type="text" formControlName="name" placeholder="Nombre">
-            <label for="name">Nombre</label>
-            @if (isInvalid('name')) {
-              <span class="field-error">Nombre requerido (mín. 2 caracteres)</span>
-            }
-          </div>
-
-          <div class="form-group" [class.error]="isInvalid('email')">
-            <input id="email" type="email" formControlName="email" placeholder="Email">
-            <label for="email">Email</label>
-            @if (isInvalid('email')) {
-              <span class="field-error">Email válido requerido</span>
-            }
-          </div>
-
-          <div class="form-group" [class.error]="isInvalid('subject')">
-            <input id="subject" type="text" formControlName="subject" placeholder="Asunto">
-            <label for="subject">Asunto</label>
-            @if (isInvalid('subject')) {
-              <span class="field-error">Asunto requerido</span>
-            }
-          </div>
-
-          <div class="form-group" [class.error]="isInvalid('message')">
-            <textarea id="message" formControlName="message" placeholder="Mensaje"></textarea>
-            <label for="message">Mensaje</label>
-            @if (isInvalid('message')) {
-              <span class="field-error">Mensaje requerido (mín. 10 caracteres)</span>
-            }
-          </div>
-
-          <!-- ERROR GLOBAL -->
-          @if (error()) {
-            <div class="error-banner">
-              <span>⚠</span> {{ error() }}
-            </div>
-          }
-
-          <button type="submit" class="btn-submit" [disabled]="sending()">
-            <span>{{ sending() ? 'Enviando...' : 'Enviar Mensaje' }}</span>
-            @if (sending()) {
-              <span class="spinner"></span>
-            }
-          </button>
-
-        </form>
-      }
-
-    </div>
-  </div>
-</section>
+      );
+      console.log('EmailJS result:', result);
+      this.submitted.set(true);
+      this.form.reset();
+    } catch (err: any) {
+      console.error('EmailJS error completo:', err);
+      this.error.set(err?.text || err?.message || 'Error al enviar. Intenta de nuevo.');
+    } finally {
+      this.sending.set(false);
+    }
+  }
+}
