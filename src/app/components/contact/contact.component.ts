@@ -47,7 +47,10 @@ export class ContactComponent implements OnInit {
   }
 
   async onSubmit(): Promise<void> {
+    console.log('onSubmit ejecutado', this.form.value, 'valid:', this.form.valid);
+
     if (this.form.invalid) {
+      console.log('Formulario inválido:', this.form.errors);
       this.form.markAllAsTouched();
       return;
     }
@@ -56,14 +59,15 @@ export class ContactComponent implements OnInit {
     this.error.set('');
 
     const { name, email, subject, message } = this.form.value;
-console.log('EmailJS config:', {
-  service: environment.emailjs.serviceId,
-  template: environment.emailjs.templateId,
-  key: environment.emailjs.publicKey,
-});
+
+    console.log('EmailJS config:', {
+      service: environment.emailjs.serviceId,
+      template: environment.emailjs.templateId,
+      key: environment.emailjs.publicKey,
+    });
 
     try {
-      await emailjs.send(
+      const result = await emailjs.send(
         environment.emailjs.serviceId,
         environment.emailjs.templateId,
         {
@@ -73,12 +77,12 @@ console.log('EmailJS config:', {
           message:    message,
         }
       );
-
+      console.log('EmailJS result:', result);
       this.submitted.set(true);
       this.form.reset();
-    } catch (err) {
-      this.error.set('Hubo un error al enviar. Intenta de nuevo.');
-      console.error('EmailJS error:', err);
+    } catch (err: any) {
+      console.error('EmailJS error completo:', err);
+      this.error.set(err?.text || err?.message || 'Error al enviar. Intenta de nuevo.');
     } finally {
       this.sending.set(false);
     }
