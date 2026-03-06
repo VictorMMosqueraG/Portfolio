@@ -26,28 +26,37 @@ jobs:
         run: npm install
 
       - name: Set environment variables
+        env:
+          EMAILJS_SERVICE_ID:  ${{ secrets.EMAILJS_SERVICE_ID }}
+          EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
+          EMAILJS_PUBLIC_KEY:  ${{ secrets.EMAILJS_PUBLIC_KEY }}
         run: |
           mkdir -p src/environments
+
           cat > src/environments/environment.ts << EOF
-          export const environment = {
-            production: false,
-            emailjs: {
-              serviceId:  '${{ secrets.EMAILJS_SERVICE_ID }}',
-              templateId: '${{ secrets.EMAILJS_TEMPLATE_ID }}',
-              publicKey:  '${{ secrets.EMAILJS_PUBLIC_KEY }}',
-            },
-          };
-          EOF
+export const environment = {
+  production: false,
+  emailjs: {
+    serviceId:  '${EMAILJS_SERVICE_ID}',
+    templateId: '${EMAILJS_TEMPLATE_ID}',
+    publicKey:  '${EMAILJS_PUBLIC_KEY}',
+  },
+};
+EOF
+
           cat > src/environments/environment.production.ts << EOF
-          export const environment = {
-            production: true,
-            emailjs: {
-              serviceId:  '${{ secrets.EMAILJS_SERVICE_ID }}',
-              templateId: '${{ secrets.EMAILJS_TEMPLATE_ID }}',
-              publicKey:  '${{ secrets.EMAILJS_PUBLIC_KEY }}',
-            },
-          };
-          EOF
+export const environment = {
+  production: true,
+  emailjs: {
+    serviceId:  '${EMAILJS_SERVICE_ID}',
+    templateId: '${EMAILJS_TEMPLATE_ID}',
+    publicKey:  '${EMAILJS_PUBLIC_KEY}',
+  },
+};
+EOF
+
+          echo "environment.ts generado:"
+          cat src/environments/environment.ts
 
       - name: Build Angular project
         run: npx ng build --configuration production --base-href "/Portfolio/"
