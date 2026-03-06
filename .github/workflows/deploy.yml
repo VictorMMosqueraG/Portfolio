@@ -20,28 +20,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Clear cache and dist
-        run: |
-          rm -rf .angular/cache
-          rm -rf dist
-
-      - name: Build Angular production
-        run: npm run build
-
-      - name: Verify build files
-        run: |
-          ls -la dist/portfolio/browser/
-          grep -o '<base href="/Portfolio/">' dist/portfolio/browser/index.html || echo "Base href OK?"
-          head -20 dist/portfolio/browser/index.html
+      - name: Build Angular project
+        run: npx ng build --configuration production --base-href "/Portfolio/"
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/portfolio/browser
-          clean: true
+          folder: dist/portfolio
