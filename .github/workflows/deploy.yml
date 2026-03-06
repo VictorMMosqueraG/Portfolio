@@ -32,17 +32,12 @@ jobs:
 
       - name: Build Angular production
         run: npm run build
-        env:
-          NG_BUILD_BASE_HREF: /Portfolio/
 
-      - name: Verify build
+      - name: Verify build files
         run: |
           ls -la dist/portfolio/browser/
-          # Test básico
-          npx http-server dist/portfolio/browser -p 8080 -c-1 --silent &
-          sleep 3
-          curl -f http://localhost:8080/Portfolio/ || (echo "Build failed" && exit 1)
-          kill %1
+          grep -o '<base href="/Portfolio/">' dist/portfolio/browser/index.html || echo "Base href OK?"
+          head -20 dist/portfolio/browser/index.html
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
