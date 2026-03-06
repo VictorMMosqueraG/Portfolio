@@ -1,0 +1,25 @@
+<section id="courses">
+  <p class="section-label">Certificados</p>
+  <h2 class="section-title">Cursos & <em>Certificados</em></h2>
+  <div class="section-divider"></div>
+
+  <div class="courses-grid">
+    @for (course of courses; track course.id; let i = $index) {
+      <div class="course-card" appScrollReveal [revealDelay]="i * 60">
+        <div class="course-badge">{{ course.badge }}</div>
+        <div class="course-issuer">{{ course.issuer }}</div>
+        <div class="course-name">{{ course.name }}</div>
+        <div class="course-date">{{ course.date }}</div>
+
+        @if (course.verifyUrl) {
+          <a [href]="course.verifyUrl" target="_blank" rel="noopener" class="course-verify">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+              <path d="M2 2h8v8M10 2L2 10" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+            {{ course.badge === 'Certificado' ? 'Verificar' : 'Ver Certificado' }}
+          </a>
+        }
+      </div>
+    }
+  </div>
+</section>

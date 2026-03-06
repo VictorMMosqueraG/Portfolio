@@ -1,0 +1,41 @@
+<section id="projects">
+  <p class="section-label">Projectos</p>
+  <h2 class="section-title">Proyectos <em>Destacados</em></h2>
+  <div class="section-divider"></div>
+
+  <div class="projects-grid">
+    @for (project of projects; track project.id; let i = $index) {
+      <div class="project-card" appScrollReveal [revealDelay]="i * 100">
+        <div class="project-number">{{ project.number }}</div>
+        <div class="project-type">{{ project.type }}</div>
+        <div class="project-name">{{ project.name }}</div>
+        <div class="project-desc">{{ project.description }}</div>
+
+        <div class="project-stack">
+          @for (tech of project.stack; track tech) {
+            <span>{{ tech }}</span>
+          }
+        </div>
+
+        <div class="project-links">
+          @if (project.liveUrl) {
+            <a [href]="project.liveUrl" target="_blank" rel="noopener" class="project-link">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M2 2h8v8M10 2L2 10" stroke="currentColor" stroke-width="1.2"/>
+              </svg>
+              Live
+            </a>
+          }
+          @if (project.githubUrl) {
+            <a [href]="project.githubUrl" target="_blank" rel="noopener" class="project-link">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path d="M6 1C3.24 1 1 3.24 1 6c0 2.21 1.43 4.08 3.41 4.74.25.05.34-.11.34-.24v-.86c-1.39.3-1.68-.67-1.68-.67-.23-.58-.56-.73-.56-.73-.46-.31.03-.3.03-.3.5.03.77.52.77.52.45.77 1.18.55 1.47.42.05-.33.18-.55.32-.68-1.11-.13-2.28-.56-2.28-2.48 0-.55.2-1 .52-1.35-.05-.13-.23-.64.05-1.33 0 0 .42-.14 1.38.52.4-.11.83-.17 1.25-.17.43 0 .85.06 1.25.17.96-.66 1.38-.52 1.38-.52.28.69.1 1.2.05 1.33.32.35.52.8.52 1.35 0 1.93-1.17 2.35-2.29 2.47.18.16.34.46.34.93v1.38c0 .13.09.29.34.24C9.57 10.08 11 8.21 11 6c0-2.76-2.24-5-5-5z" fill="currentColor"/>
+              </svg>
+              GitHub
+            </a>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

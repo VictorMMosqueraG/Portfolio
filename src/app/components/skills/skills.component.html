@@ -1,0 +1,20 @@
+<section id="skills">
+  <p class="section-label">Skills</p>
+  <h2 class="section-title">Stack <em>Tecnológico</em></h2>
+  <div class="section-divider"></div>
+
+  <div class="skills-grid">
+    @for (cat of skills; track cat.id; let i = $index) {
+      <div class="skill-category" appScrollReveal [revealDelay]="i * 80">
+        <span class="skill-cat-icon">{{ cat.icon }}</span>
+        <div class="skill-cat-title">{{ cat.title }}</div>
+        <div class="skill-cat-subtitle">{{ cat.subtitle }}</div>
+        <div class="skill-tags">
+          @for (tag of cat.tags; track tag) {
+            <span class="skill-tag">{{ tag }}</span>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</section>

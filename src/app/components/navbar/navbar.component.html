@@ -1,0 +1,17 @@
+<nav [class.scrolled]="scrolled()">
+  <a class="nav-logo" (click)="scrollTo('hero')">Dev<span>Folio</span></a>
+
+  <ul class="nav-links" [class.open]="menuOpen()">
+    @for (link of links; track link.fragment) {
+      <li>
+        <button class="nav-link" (click)="scrollTo(link.fragment)">
+          {{ link.label }}
+        </button>
+      </li>
+    }
+  </ul>
+
+  <button class="hamburger" (click)="toggleMenu()" [class.active]="menuOpen()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>

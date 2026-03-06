@@ -1,0 +1,110 @@
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.5rem 5vw;
+  background: rgba(8, 8, 8, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  transition: padding 0.4s, background 0.4s;
+
+  &.scrolled {
+    padding: 1rem 5vw;
+    background: rgba(8, 8, 8, 0.97);
+  }
+}
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  color: var(--gold-light);
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  span {
+    color: var(--silver);
+    font-style: italic;
+  }
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  margin: 0; padding: 0;
+}
+
+.nav-link {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  transition: color 0.3s;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s;
+  }
+
+  &:hover {
+    color: var(--gold-light);
+    &::after { width: 100%; }
+  }
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+
+  span {
+    display: block;
+    width: 22px; height: 1px;
+    background: var(--gold);
+    transition: all 0.3s;
+  }
+
+  &.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  &.active span:nth-child(2) { opacity: 0; }
+  &.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+}
+
+@media (max-width: 768px) {
+  .hamburger { display: flex; }
+
+  .nav-links {
+    display: none;
+    position: fixed;
+    inset: 0;
+    top: 60px;
+    background: rgba(8, 8, 8, 0.98);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+
+    &.open { display: flex; }
+
+    .nav-link { font-size: 1rem; letter-spacing: 0.2em; }
+  }
+}

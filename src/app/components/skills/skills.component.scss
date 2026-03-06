@@ -1,0 +1,82 @@
+#skills {
+  padding: 8rem 5vw;
+  background: var(--bg-deep);
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-top: 3rem;
+}
+
+.skill-category {
+  background: var(--bg-card);
+  padding: 2.5rem;
+  transition: background 0.3s;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+
+  &:hover {
+    background: var(--bg-card-hover);
+    &::before { transform: scaleX(1); }
+  }
+}
+
+.skill-cat-icon {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.skill-cat-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  font-weight: 300;
+  color: var(--gold-light);
+  margin-bottom: 0.4rem;
+}
+
+.skill-cat-subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.skill-tag {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--silver);
+  transition: border-color 0.3s, color 0.3s;
+  cursor: default;
+
+  &:hover {
+    border-color: var(--gold);
+    color: var(--gold-light);
+  }
+}

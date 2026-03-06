@@ -1,0 +1,26 @@
+<section id="about">
+  <div class="about-grid" *ngIf="owner">
+
+    <div class="about-text" appScrollReveal [revealDelay]="0">
+      <p class="section-label">Sobre Mí</p>
+      <h2 class="section-title">Creando <em>Excelencia<br>Digital</em></h2>
+      <div class="section-divider"></div>
+
+      @for (p of owner.about.paragraphs; track $index) {
+        <p [innerHTML]="p"></p>
+      }
+    </div>
+
+    <div class="stats-grid" appScrollReveal [revealDelay]="150">
+      @for (stat of owner.stats; track stat.label) {
+        <div class="stat-item">
+          <div class="stat-number" #statNumber [attr.data-value]="stat.number">
+            {{ stat.number }}
+          </div>
+          <div class="stat-label">{{ stat.label }}</div>
+        </div>
+      }
+    </div>
+
+  </div>
+</section>

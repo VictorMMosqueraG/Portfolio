@@ -1,0 +1,82 @@
+/* ── CUSTOM CURSOR ── */
+.cursor-dot {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: var(--gold);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s;
+  mix-blend-mode: difference;
+}
+
+.cursor-ring {
+  position: fixed;
+  width: 36px; height: 36px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, opacity 0.3s;
+  mix-blend-mode: difference;
+
+  &.hovered {
+    width: 56px; height: 56px;
+    opacity: 0.8;
+  }
+}
+
+/* ── SCROLL PROGRESS ── */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  z-index: 200;
+  background: transparent;
+}
+
+.scroll-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--silver));
+  transition: width 0.1s;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 2.5rem 5vw;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-surface);
+
+  p {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--text-secondary);
+  }
+}
+
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem;
+  color: var(--gold-light);
+  font-style: italic;
+}
+
+.footer-tech {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: #2a2a2a;
+}
+
+/* ── HIDE cursor on mobile ── */
+@media (max-width: 768px) {
+  .cursor-dot,
+  .cursor-ring { display: none; }
+}

@@ -1,0 +1,35 @@
+<section id="experience">
+  <p class="section-label">Experiencia</p>
+  <h2 class="section-title">Trayectoria <em>Profesional</em></h2>
+  <div class="section-divider"></div>
+
+  <div class="exp-layout">
+
+    <!-- TABS -->
+    <div class="exp-tabs">
+      @for (exp of experiences; track exp.id; let i = $index) {
+        <button
+          class="exp-tab"
+          [class.active]="activeIndex() === i"
+          (click)="setActive(i)">
+          {{ exp.company }}
+        </button>
+      }
+    </div>
+
+    <!-- PANEL -->
+    @if (active) {
+      <div class="exp-panel">
+        <div class="exp-company">{{ active.company }}</div>
+        <div class="exp-role">{{ active.role }}</div>
+        <div class="exp-period">{{ active.period }}</div>
+        <ul class="exp-list">
+          @for (bullet of active.bullets; track $index) {
+            <li>{{ bullet }}</li>
+          }
+        </ul>
+      </div>
+    }
+
+  </div>
+</section>
