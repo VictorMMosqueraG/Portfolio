@@ -13,22 +13,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
-      - name: Install dependencies
-        run: npm install
+      - name: Install deps
+        run: npm ci
 
-      - name: Build Angular project
-        run: npx ng build --configuration production --base-href "/Portfolio/"
+      - name: Clean
+        run: rm -rf .angular/cache dist
 
-      - name: Deploy to GitHub Pages
+      - name: Build
+        run: ng build --base-href "/Portfolio/"
+
+      - name: Fix SPA routing (404.html para lazy modules)
+        run: |
+          cp dist/portfolio/browser/index.html dist/portfolio/browser/404.html
+
+      - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
-          folder: dist/portfolio
+          folder: dist/portfolio/browser
+          clean: true
