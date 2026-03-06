@@ -132,6 +132,16 @@ El output queda en `dist/portfolio/browser/`.
 
 El pipeline se dispara automáticamente al hacer push a `main`.
 
+### Configurar secrets en GitHub
+
+Ve a `Settings → Secrets and variables → Actions` y agrega:
+
+| Secret | Valor |
+|--------|-------|
+| `EMAILJS_SERVICE_ID` | Tu Service ID de EmailJS |
+| `EMAILJS_TEMPLATE_ID` | Tu Template ID de EmailJS |
+| `EMAILJS_PUBLIC_KEY` | Tu Public Key de EmailJS |
+
 ### Deploy manual
 
 ```bash
