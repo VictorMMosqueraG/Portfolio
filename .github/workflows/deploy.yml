@@ -26,39 +26,14 @@ jobs:
         run: npm install
 
       - name: Set environment variables
-        run: |
-          mkdir -p src/environments
-          node -e "
-            const fs = require('fs');
-            const env = {
-              serviceId: process.env.EMAILJS_SERVICE_ID,
-              templateId: process.env.EMAILJS_TEMPLATE_ID,
-              publicKey: process.env.EMAILJS_PUBLIC_KEY,
-            };
-            const dev = \`export const environment = {
-            production: false,
-            emailjs: {
-              serviceId:  '\${env.serviceId}',
-              templateId: '\${env.templateId}',
-              publicKey:  '\${env.publicKey}',
-            },
-          };\`;
-            const prod = \`export const environment = {
-            production: true,
-            emailjs: {
-              serviceId:  '\${env.serviceId}',
-              templateId: '\${env.templateId}',
-              publicKey:  '\${env.publicKey}',
-            },
-          };\`;
-            fs.writeFileSync('src/environments/environment.ts', dev);
-            fs.writeFileSync('src/environments/environment.production.ts', prod);
-            console.log('Environments generated OK');
-          "
+        run: node generate-env.js
         env:
           EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
           EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
           EMAILJS_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
+
+      - name: Verify environment file
+        run: cat src/environments/environment.production.ts
 
       - name: Build Angular project
         run: npx ng build --configuration production --base-href "/Portfolio/"
