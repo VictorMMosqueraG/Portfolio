@@ -15,6 +15,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Necesario para poder borrar/crear ramas remotas
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -25,24 +27,27 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Clean
+      - name: Clean local build
         run: rm -rf .angular/cache dist
 
       - name: Build
-        run: npm run build  # Asegura --base-href "/Portfolio/" en package.json
+        run: npm run build  # ng build --configuration production --base-href "/Portfolio/"
 
       - name: Fix SPA routing
         run: cp dist/portfolio/browser/index.html dist/portfolio/browser/404.html
 
-      - name: Verify build
+      - name: Delete remote gh-pages branch (if exists)
         run: |
-          ls -la dist/portfolio/browser/
-          echo "=== index.html head ==="
-          head -20 dist/portfolio/browser/index.html
+          git fetch origin
+          if git show-ref --verify --quiet refs/remotes/origin/gh-pages; then
+            git push origin --delete gh-pages
+          else
+            echo "gh-pages does not exist yet, nothing to delete"
+          fi
 
-      - name: Deploy to gh-pages
+      - name: Deploy fresh to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
+          branch: gh-pages           # Se vuelve a crear limpia
           folder: dist/portfolio/browser
-          clean: true
+          clean: true                # Limpia el contenido del branch recién creado
