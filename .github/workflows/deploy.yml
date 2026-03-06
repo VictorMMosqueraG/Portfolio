@@ -35,6 +35,11 @@ jobs:
       - name: Verify environment file
         run: cat src/environments/environment.production.ts
 
+      - name: Clear Angular cache
+        run: |
+          rm -rf .angular/cache
+          rm -rf dist
+
       - name: Build Angular project
         run: npx ng build --configuration production --base-href "/Portfolio/"
 

@@ -31,7 +31,6 @@ if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 fs.writeFileSync(path.join(dir, 'environment.ts'), dev);
 fs.writeFileSync(path.join(dir, 'environment.production.ts'), prod);
 
-console.log('✅ Environments generated:');
 console.log('serviceId:', serviceId ? '***' : 'EMPTY');
 console.log('templateId:', templateId ? '***' : 'EMPTY');
 console.log('publicKey:', publicKey ? '***' : 'EMPTY');
