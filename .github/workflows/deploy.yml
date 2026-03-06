@@ -20,23 +20,33 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Clear Angular cache
+      - name: Clear cache and dist
         run: |
           rm -rf .angular/cache
           rm -rf dist
 
-      - name: Build Angular project
-        run: npx ng build --configuration production --base-href "/Portfolio/"
+      - name: Build Angular production
+        run: npm run build
+        env:
+          NG_BUILD_BASE_HREF: /Portfolio/
 
-      - name: Add cache busting
-        run: echo "<!-- build $(date) -->" >> dist/portfolio/browser/index.html
+      - name: Verify build
+        run: |
+          ls -la dist/portfolio/browser/
+          # Test básico
+          npx http-server dist/portfolio/browser -p 8080 -c-1 --silent &
+          sleep 3
+          curl -f http://localhost:8080/Portfolio/ || (echo "Build failed" && exit 1)
+          kill %1
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
           folder: dist/portfolio/browser
+          clean: true
