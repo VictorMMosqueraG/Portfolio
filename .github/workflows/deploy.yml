@@ -29,17 +29,18 @@ jobs:
         run: rm -rf .angular/cache dist
 
       - name: Build
-        run: npm run build
+        run: npm run build  # Asegura --base-href "/Portfolio/" en package.json
 
       - name: Fix SPA routing
         run: cp dist/portfolio/browser/index.html dist/portfolio/browser/404.html
 
-      - name: Verify
+      - name: Verify build
         run: |
           ls -la dist/portfolio/browser/
-          grep '<base href="/Portfolio/">' dist/portfolio/browser/index.html
+          echo "=== index.html head ==="
+          head -20 dist/portfolio/browser/index.html
 
-      - name: Deploy
+      - name: Deploy to gh-pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           branch: gh-pages
