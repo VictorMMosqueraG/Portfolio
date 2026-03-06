@@ -29,11 +29,15 @@ jobs:
         run: rm -rf .angular/cache dist
 
       - name: Build
-        run: ng build --base-href "/Portfolio/"
+        run: npm run build
 
-      - name: Fix SPA routing (404.html para lazy modules)
+      - name: Fix SPA routing
+        run: cp dist/portfolio/browser/index.html dist/portfolio/browser/404.html
+
+      - name: Verify
         run: |
-          cp dist/portfolio/browser/index.html dist/portfolio/browser/404.html
+          ls -la dist/portfolio/browser/
+          grep '<base href="/Portfolio/">' dist/portfolio/browser/index.html
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
