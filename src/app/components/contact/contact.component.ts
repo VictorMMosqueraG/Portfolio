@@ -35,6 +35,13 @@ export class ContactComponent implements OnInit {
     this.error.set('');
 
     this.owner = this.dataService.getOwner();
+
+    console.log('ENV produccion:', {
+      service: environment.emailjs.serviceId,
+      template: environment.emailjs.templateId,
+      key: environment.emailjs.publicKey,
+    });
+
     emailjs.init(environment.emailjs.publicKey);
 
     this.form = this.fb.group({
@@ -64,12 +71,6 @@ export class ContactComponent implements OnInit {
 
     const { name, email, subject, message } = this.form.value;
 
-    console.log('EmailJS config:', {
-      service: environment.emailjs.serviceId,
-      template: environment.emailjs.templateId,
-      key: environment.emailjs.publicKey,
-    });
-
     try {
       const result = await emailjs.send(
         environment.emailjs.serviceId,
@@ -85,7 +86,7 @@ export class ContactComponent implements OnInit {
       this.submitted.set(true);
       this.form.reset();
     } catch (err: any) {
-      console.error('EmailJS error completo:', err);
+      console.error('EmailJS error:', err);
       this.error.set(err?.text || err?.message || 'Error al enviar. Intenta de nuevo.');
     } finally {
       this.sending.set(false);
