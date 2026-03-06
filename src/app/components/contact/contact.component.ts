@@ -30,6 +30,10 @@ export class ContactComponent implements OnInit {
   form!: FormGroup;
 
   ngOnInit(): void {
+    this.submitted.set(false);
+    this.sending.set(false);
+    this.error.set('');
+
     this.owner = this.dataService.getOwner();
     emailjs.init(environment.emailjs.publicKey);
 
