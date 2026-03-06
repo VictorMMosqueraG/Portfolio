@@ -25,16 +25,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set environment variables
-        run: node generate-env.js
-        env:
-          EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
-          EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
-          EMAILJS_PUBLIC_KEY: ${{ secrets.EMAILJS_PUBLIC_KEY }}
-
-      - name: Verify environment file
-        run: cat src/environments/environment.production.ts
-
       - name: Clear Angular cache
         run: |
           rm -rf .angular/cache

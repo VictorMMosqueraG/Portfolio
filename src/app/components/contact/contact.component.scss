@@ -1,17 +1,14 @@
 #contact {
   padding: 8rem 5vw;
   background: var(--bg-deep);
-  min-height: 80vh;
+  min-height: 60vh;
   display: flex;
   align-items: center;
 }
 
 .contact-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6rem;
-  align-items: start;
   width: 100%;
+  max-width: 600px;
 }
 
 .contact-info {
@@ -61,167 +58,6 @@
 
 .social-icon { font-size: 1rem; }
 
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.form-group {
-  position: relative;
-
-  input, textarea {
-    width: 100%;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    color: var(--text-primary);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 300;
-    padding: 1.2rem 1.5rem;
-    outline: none;
-    resize: none;
-    transition: border-color 0.3s;
-
-    &:focus { border-color: var(--gold); }
-    &::placeholder { color: transparent; }
-  }
-
-  textarea { height: 140px; }
-
-  label {
-    position: absolute;
-    top: 1.2rem; left: 1.5rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-    pointer-events: none;
-    transition: all 0.3s;
-    background: transparent;
-  }
-
-  input:focus ~ label,
-  input:not(:placeholder-shown) ~ label,
-  textarea:focus ~ label,
-  textarea:not(:placeholder-shown) ~ label {
-    top: -0.55rem;
-    left: 1rem;
-    font-size: 0.58rem;
-    background: var(--bg-deep);
-    padding: 0 0.4rem;
-    color: var(--gold);
-  }
-
-  &.error input,
-  &.error textarea { border-color: #c94c4c; }
-}
-
-.field-error {
-  position: absolute;
-  bottom: -1.3rem; left: 0;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  color: #c97a7a;
-}
-
-.btn-submit {
-  align-self: flex-start;
-  padding: 1rem 2.5rem;
-  background: transparent;
-  border: 1px solid var(--gold);
-  color: var(--gold-light);
-  font-family: 'DM Mono', monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: color 0.4s;
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-
-  &::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: var(--gold);
-    transform: translateY(101%);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  &:hover:not(:disabled)::before { transform: translateY(0); }
-  &:hover:not(:disabled) { color: var(--bg-deep); }
-  &:disabled { opacity: 0.6; cursor: not-allowed; }
-
-  span { position: relative; z-index: 1; }
-}
-
-.spinner {
-  width: 14px; height: 14px;
-  border: 1px solid rgba(201,168,76,0.3);
-  border-top-color: var(--gold);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  position: relative; z-index: 1;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.success-state {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1rem;
-  padding: 3rem;
-  border: 1px solid var(--border);
-  animation: fadeUp 0.5s ease both;
-}
-
-.success-icon {
-  font-size: 2rem;
-  color: var(--gold);
-}
-
-.success-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 2rem;
-  font-weight: 300;
-  color: var(--text-primary);
-}
-
-.success-sub {
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-}
-
-.btn-ghost-sm {
-  background: none;
-  border: none;
-  font-family: 'DM Mono', monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  color: var(--gold);
-  cursor: pointer;
-  margin-top: 0.5rem;
-  transition: color 0.3s;
-
-  &:hover { color: var(--gold-light); }
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
 @media (max-width: 768px) {
-  .contact-inner {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
+  #contact { min-height: 40vh; }
 }
