@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortfolioDataService } from '../../services/portfolio-data.service';
-import { Project } from '../../models/project.model';
+import { LanguageService } from '../../services/language.service';
 import { ScrollRevealDirective } from '../../directives/scroll-reveal.directive';
 
 @Component({
@@ -11,11 +11,14 @@ import { ScrollRevealDirective } from '../../directives/scroll-reveal.directive'
   templateUrl: './projects.component.html',
   styleUrls: ['./projects.component.scss'],
 })
-export class ProjectsComponent implements OnInit {
+export class ProjectsComponent {
   private dataService = inject(PortfolioDataService);
-  projects: Project[] = [];
+  private langService = inject(LanguageService);
 
-  ngOnInit(): void {
-    this.projects = this.dataService.getProjects();
-  }
+  lang = this.langService.lang;
+
+  projects = computed(() => {
+    this.langService.lang();
+    return this.dataService.getProjects();
+  });
 }

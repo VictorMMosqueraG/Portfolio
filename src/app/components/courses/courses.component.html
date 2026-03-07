@@ -1,10 +1,16 @@
 <section id="courses">
-  <p class="section-label">Certificados</p>
-  <h2 class="section-title">Cursos & <em>Certificados</em></h2>
+  <p class="section-label">{{ lang() === 'en' ? 'Certificates' : 'Certificados' }}</p>
+  <h2 class="section-title">
+    @if (lang() === 'en') {
+      Courses & <em>Certificates</em>
+    } @else {
+      Cursos & <em>Certificados</em>
+    }
+  </h2>
   <div class="section-divider"></div>
 
   <div class="courses-grid">
-    @for (course of courses; track course.id; let i = $index) {
+    @for (course of courses(); track course.id; let i = $index) {
       <div class="course-card" appScrollReveal [revealDelay]="i * 60">
         <div class="course-badge">{{ course.badge }}</div>
         <div class="course-issuer">{{ course.issuer }}</div>
@@ -16,7 +22,7 @@
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M2 2h8v8M10 2L2 10" stroke="currentColor" stroke-width="1.2"/>
             </svg>
-            {{ course.badge === 'Certificado' ? 'Verificar' : 'Ver Certificado' }}
+            {{ lang() === 'en' ? 'Verify' : (course.badge === 'Certificado' ? 'Verificar' : 'Ver Certificado') }}
           </a>
         }
       </div>

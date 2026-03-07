@@ -1,0 +1,5 @@
+<button class="lang-toggle" (click)="lang.toggle()">
+  <span [class.active]="lang.lang() === 'es'">ES</span>
+  <span class="separator">/</span>
+  <span [class.active]="lang.lang() === 'en'">EN</span>
+</button>

@@ -1,4 +1,4 @@
-export type CertificateBadge = 'Certificado' | 'Completado' | 'En Curso';
+export type CertificateBadge = 'Certificado' | 'Completado' | 'En Curso' | 'Certified' | 'Completed' | 'In Progress';
 
 export interface Course {
   id: number;

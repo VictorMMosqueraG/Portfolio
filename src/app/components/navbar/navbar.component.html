@@ -1,8 +1,8 @@
 <nav [class.scrolled]="scrolled()">
-  <a class="nav-logo" (click)="scrollTo('hero')">Dev<span>Folio</span></a>
+  <a class="nav-logo" (click)="scrollTo('hero')">Victor<span>Mosquera</span></a>
 
   <ul class="nav-links" [class.open]="menuOpen()">
-    @for (link of links; track link.fragment) {
+    @for (link of links(); track link.fragment) {
       <li>
         <button class="nav-link" (click)="scrollTo(link.fragment)">
           {{ link.label }}

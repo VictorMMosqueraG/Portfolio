@@ -1,17 +1,24 @@
-@if (owner) {
+@if (owner()) {
 <section id="contact">
   <div class="contact-inner">
 
     <div class="contact-info">
-      <p class="section-label">06 — Contacto</p>
+      <p class="section-label">{{ lang() === 'en' ? 'Contact' : 'Contacto' }}</p>
       <div class="big-text">
-        Trabajemos<br><em>Juntos.</em>
+        @if (lang() === 'en') {
+          Let's Work<br><em>Together.</em>
+        } @else {
+          Trabajemos<br><em>Juntos.</em>
+        }
       </div>
-      <p>¿Tienes un proyecto en mente? Estoy abierto a nuevas oportunidades,
-        colaboraciones y conversaciones interesantes.</p>
+      <p>
+        {{ lang() === 'en'
+          ? 'Have a project in mind? I am open to new opportunities, collaborations and interesting conversations.'
+          : '¿Tienes un proyecto en mente? Estoy abierto a nuevas oportunidades, colaboraciones y conversaciones interesantes.' }}
+      </p>
 
       <div class="social-links">
-        @for (s of owner.socials; track s.label) {
+        @for (s of owner().socials; track s.label) {
           <a [href]="s.url" target="_blank" rel="noopener" class="social-link">
             <span class="social-icon">{{ s.icon }}</span>
             {{ s.label }}

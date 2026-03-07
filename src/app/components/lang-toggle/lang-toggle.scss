@@ -1,0 +1,34 @@
+.lang-toggle {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 999;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: border-color 0.3s;
+
+  &:hover {
+    border-color: var(--gold);
+  }
+
+  span {
+    transition: color 0.3s;
+  }
+
+  span.active {
+    color: var(--gold-light);
+  }
+
+  .separator {
+    color: var(--border);
+  }
+}

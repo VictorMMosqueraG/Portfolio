@@ -1,12 +1,18 @@
 <section id="experience">
-  <p class="section-label">Experiencia</p>
-  <h2 class="section-title">Trayectoria <em>Profesional</em></h2>
+  <p class="section-label">{{ lang() === 'en' ? 'Experience' : 'Experiencia' }}</p>
+  <h2 class="section-title">
+    @if (lang() === 'en') {
+      Professional <em>Journey</em>
+    } @else {
+      Trayectoria <em>Profesional</em>
+    }
+  </h2>
   <div class="section-divider"></div>
 
   <div class="exp-layout">
 
     <div class="exp-tabs">
-      @for (exp of experiences; track exp.id; let i = $index) {
+      @for (exp of experiences(); track exp.id; let i = $index) {
         <button
           class="exp-tab"
           [class.active]="activeIndex() === i"

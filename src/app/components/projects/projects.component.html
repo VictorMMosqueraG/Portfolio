@@ -1,10 +1,16 @@
 <section id="projects">
-  <p class="section-label">Projectos</p>
-  <h2 class="section-title">Proyectos <em>Destacados</em></h2>
+  <p class="section-label">{{ lang() === 'en' ? 'Projects' : 'Proyectos' }}</p>
+  <h2 class="section-title">
+    @if (lang() === 'en') {
+      Featured <em>Projects</em>
+    } @else {
+      Proyectos <em>Destacados</em>
+    }
+  </h2>
   <div class="section-divider"></div>
 
   <div class="projects-grid">
-    @for (project of projects; track project.id; let i = $index) {
+    @for (project of projects(); track project.id; let i = $index) {
       <div class="project-card" appScrollReveal [revealDelay]="i * 100">
         <div class="project-number">{{ project.number }}</div>
         <div class="project-type">{{ project.type }}</div>

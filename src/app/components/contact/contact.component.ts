@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortfolioDataService } from '../../services/portfolio-data.service';
-import { PortfolioOwner } from '../../models/skill.model';
+import { LanguageService } from '../../services/language.service';
 
 @Component({
   selector: 'app-contact',
@@ -10,11 +10,14 @@ import { PortfolioOwner } from '../../models/skill.model';
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent {
   private dataService = inject(PortfolioDataService);
-  owner!: PortfolioOwner;
+  private langService = inject(LanguageService);
 
-  ngOnInit(): void {
-    this.owner = this.dataService.getOwner();
-  }
+  lang = this.langService.lang;
+
+  owner = computed(() => {
+    this.langService.lang();
+    return this.dataService.getOwner();
+  });
 }

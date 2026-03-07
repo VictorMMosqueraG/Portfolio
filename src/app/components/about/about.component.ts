@@ -1,7 +1,7 @@
-import { Component, inject, OnInit, ElementRef, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
+import { Component, inject, computed, ElementRef, QueryList, ViewChildren, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortfolioDataService } from '../../services/portfolio-data.service';
-import { PortfolioOwner } from '../../models/skill.model';
+import { LanguageService } from '../../services/language.service';
 import { ScrollRevealDirective } from '../../directives/scroll-reveal.directive';
 
 @Component({
@@ -11,16 +11,19 @@ import { ScrollRevealDirective } from '../../directives/scroll-reveal.directive'
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
 })
-export class AboutComponent implements OnInit, AfterViewInit {
+export class AboutComponent implements AfterViewInit {
   private dataService = inject(PortfolioDataService);
-  owner!: PortfolioOwner;
+  private langService = inject(LanguageService);
+
+  lang = this.langService.lang;
+
+  owner = computed(() => {
+    this.langService.lang();
+    return this.dataService.getOwner();
+  });
+
   countersStarted = false;
-
   @ViewChildren('statNumber') statNumbers!: QueryList<ElementRef<HTMLElement>>;
-
-  ngOnInit(): void {
-    this.owner = this.dataService.getOwner();
-  }
 
   ngAfterViewInit(): void {
     const observer = new IntersectionObserver(
@@ -33,7 +36,6 @@ export class AboutComponent implements OnInit, AfterViewInit {
       },
       { threshold: 0.3 }
     );
-
     const el = document.querySelector('.stats-grid');
     if (el) observer.observe(el);
   }

@@ -2,23 +2,23 @@
   <div class="hero-bg-lines"></div>
   <div class="hero-glow"></div>
 
-  <div class="hero-content" *ngIf="owner">
-    <p class="hero-eyebrow">{{ owner.tagline }}</p>
+  <div class="hero-content" *ngIf="owner()">
+    <p class="hero-eyebrow">{{ owner().tagline }}</p>
 
     <h1 class="hero-name">
-      {{ owner.firstName }}<br>
-      <em>{{ owner.lastName }}.</em>
+      {{ owner().firstName }}<br>
+      <em>{{ owner().lastName }}.</em>
     </h1>
 
-    <p class="hero-role">{{ owner.role }}</p>
-    <p class="hero-desc">{{ owner.description }}</p>
+    <p class="hero-role">{{ owner().role }}</p>
+    <p class="hero-desc">{{ owner().description }}</p>
 
     <div class="hero-cta">
       <button class="btn-primary" (click)="scrollTo('projects')">
-        <span>Ver Proyectos</span>
+        <span>{{ lang() === 'en' ? 'View Projects' : 'Ver Proyectos' }}</span>
       </button>
       <button class="btn-ghost" (click)="scrollTo('contact')">
-        Hablemos
+        {{ lang() === 'en' ? "Let's Talk" : 'Hablemos' }}
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.2"
                 stroke-linecap="round" stroke-linejoin="round"/>
@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="hero-visual" *ngIf="owner">
+  <div class="hero-visual" *ngIf="owner()">
     <div class="hero-orb-wrapper">
 
       <div class="hero-orb-ring ring-1"><div class="orb-dot"></div></div>
@@ -36,9 +36,9 @@
 
       <div class="hero-photo-container">
         @if (photoUrl) {
-          <img [src]="photoUrl" [alt]="owner.firstName" class="hero-photo" />
+          <img [src]="photoUrl" [alt]="owner().firstName" class="hero-photo" />
         } @else {
-          <div class="hero-initials">{{ owner.initials }}</div>
+          <div class="hero-initials">{{ owner().initials }}</div>
         }
         <div class="hero-photo-overlay"></div>
       </div>

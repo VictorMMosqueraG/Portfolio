@@ -1,7 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PortfolioDataService } from '../../services/portfolio-data.service';
-import { SkillCategory } from '../../models/skill.model';
+import { LanguageService } from '../../services/language.service';
 import { ScrollRevealDirective } from '../../directives/scroll-reveal.directive';
 
 @Component({
@@ -11,11 +11,14 @@ import { ScrollRevealDirective } from '../../directives/scroll-reveal.directive'
   templateUrl: './skills.component.html',
   styleUrls: ['./skills.component.scss'],
 })
-export class SkillsComponent implements OnInit {
+export class SkillsComponent {
   private dataService = inject(PortfolioDataService);
-  skills: SkillCategory[] = [];
+  private langService = inject(LanguageService);
 
-  ngOnInit(): void {
-    this.skills = this.dataService.getSkills();
-  }
+  lang = this.langService.lang;
+
+  skills = computed(() => {
+    this.langService.lang();
+    return this.dataService.getSkills();
+  });
 }

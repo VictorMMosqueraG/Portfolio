@@ -4,6 +4,8 @@ import {
   AfterViewInit,
   HostListener,
   signal,
+  inject,
+  computed,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -14,6 +16,8 @@ import { ExperienceComponent } from './components/experience/experience.componen
 import { ProjectsComponent } from './components/projects/projects.component';
 import { CoursesComponent } from './components/courses/courses.component';
 import { ContactComponent } from './components/contact/contact.component';
+import { LanguageService } from './services/language.service';
+import { LangToggle } from './components/lang-toggle/lang-toggle';
 
 @Component({
   selector: 'app-root',
@@ -28,17 +32,26 @@ import { ContactComponent } from './components/contact/contact.component';
     ProjectsComponent,
     CoursesComponent,
     ContactComponent,
+    LangToggle,
   ],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, AfterViewInit {
+  private langService = inject(LanguageService);
+
   scrollProgress = signal(0);
   cursorX = signal(0);
   cursorY = signal(0);
   ringX = signal(0);
   ringY = signal(0);
   hovered = signal(false);
+
+  footerYear = computed(() =>
+    this.langService.lang() === 'en'
+      ? `© ${new Date().getFullYear()} — Crafted with artisanal precision`
+      : `© ${new Date().getFullYear()} — Diseñado con precisión artesanal`
+  );
 
   private targetX = 0;
   private targetY = 0;
