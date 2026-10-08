@@ -21,4 +21,7 @@ export class ProjectsComponent {
     this.langService.lang();
     return this.dataService.getProjects();
   });
+
+  caseStudies = computed(() => this.projects().filter((p) => p.featured));
+  repositories = computed(() => this.projects().filter((p) => !p.featured));
 }
